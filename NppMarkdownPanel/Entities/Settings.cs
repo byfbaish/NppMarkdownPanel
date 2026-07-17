@@ -22,11 +22,14 @@ namespace NppMarkdownPanel.Entities
         public int ZoomLevel { get; set; }
         public string HtmlFileName { get; set; }
         public string SupportedFileExt { get; set; }
-        public bool AllowAllExtensions { get; set; }
+        public bool SupportFilesWithNoExt { get; set; }
+        public bool AllowAllExtensions { get; set; }        
         public bool IsDarkModeEnabled { get; set; }
         public bool ShowToolbar { get; set; }
         public bool ShowStatusbar { get; set; }
         public bool AutoShowPanel { get; set; }
+        public bool EnableThreeStateToggle { get; set; }
+        public bool ShowOutline { get; set; }
 
         public string PreProcessorCommandFilename { get; set; }
         public string PreProcessorArguments { get; set; }

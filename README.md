@@ -8,8 +8,9 @@ Plugin to preview Markdown files in Notepad++
 
 ### Current Version
 
-The current version is **0.9.0** it can be found [here](https://github.com/mohzy83/NppMarkdownPanel/releases)
+The current version is **0.9.3** it can be found [here](https://github.com/mohzy83/NppMarkdownPanel/releases)
 
+**Please update to version 0.9.3 due to security issuses with all previous versions of the plugin! (see Version-History for mor details)**
 
 ## Prerequisites
 - .NET 4.7.2 or higher
@@ -41,6 +42,7 @@ For an detailed explanation check issue [57](https://github.com/mohzy83/NppMarkd
  WebView2 Edge is required for the plugin to function properly. 
  Windows 7 does not include WebView2 Edge by default, so you must manually install the WebView2 Runtime from Microsoft's WebView2 download page before using the plugin.
  https://developer.microsoft.com/en-us/microsoft-edge/webview2?form=MA13LH#download
+
 ## Usage
 
 After the installation you will find a small purple markdown icon in your toolbar.
@@ -95,7 +97,10 @@ To open the settings for this plugin: Plugins -> MarkdownPanel -> Settings
 	Other file type won't be displayed (there will be a warning).
 	The file extensions have to be separated by a comma `,` - character.
 	No input allowed when option "Allow all file extensions" is checked.
-
+	
+* #### Enable preview for files without extension
+    When this option is checked, Markdown Panel renders files without an extension (eg. "new 2").
+	
 * #### Automatically show panel for supported files
     When this option is checked, Markdown Panel will open the preview window automatically for files with a supported extension.
 	The preview will be closed for files with no supported extension.
@@ -107,11 +112,25 @@ To open the settings for this plugin: Plugins -> MarkdownPanel -> Settings
 * #### Show Statusbar in Preview Window (Preview Links)
     Checking this box will show the status bar, which previews urls for links. By default, this is unchecked.
 
+* #### Enable three-state toggle (docked → fullscreen → hidden)
+	This option changes the behaviour of the "Toggle Markdown Panel" function. When this option is checked, the panel can be
+	switched between the states hidden, docked and fullscreen. When this option in not checked, the panel toggles between the states docked and hidden.
 
 ### Preview Window Toolbar
 
 * #### Save As... (![save-btn](help/save-btn.png "Picture of the Save button on the preview panel toolbar"))
     Clicking this button allows you to save the rendered preview as an HTML document.
+
+* #### Save As (with Light Theme)
+    Saves the rendered preview as an HTML document using the light theme (even if the darkmode is enabled).
+
+![saveas_lighttheme](help/saveas_lighttheme.png "Save As Light Theme")	
+
+* #### Copy to clipboard
+    Copies the current preview to the clipboard (formatted in HTML). 
+	
+* #### Export to PDF
+    Exports the current preview as PDF file. 
 
 ### Synchronize viewer with caret position
 
@@ -123,7 +142,65 @@ This is similar to the _Synchronize Vertical Scrolling_ option of Notepad++ for 
 When this option is enabled, the plugin ensures that the first visible line in the 
 editor is also visible in the preview. (This is an alternative to _Synchronize viewer with caret position_)
 
+### Show Outline
+
+When this option is enabled, an outline of the document is displayed. 
+You can toggle the full outline with the burger menu switch.
+The outline is disabled by default.
+![npp-outline.png](help/npp-outline.png "Outline")	
+
+### Shortcut to toggle Panel
+It is possible to toggle the Panel with a shortcut. Therefore the Notepad++ "Shortcut Mapper" can be used.
+The Shortcut Mapper can be opened by "Settings" -> "Shortcut Mapper..." and switch to the tab "Plugin commands". 
+Than bind a shortcut (eg. CTRL + SHIFT + M) to the command "Toggle Markdown Panel".
+After that it's possible to use the shortcut to open or close the panel.
+![shortcut.png](help/shortcut.png "Bind shortcut to toggle function")
+
 ## Version History
+
+### Version 0.9.3 (released 2026-07-17)
+- Security Issue
+	- Fixed: Bug in NppMarkdownPanel that leads to Arbitrary Code Execution [#180](https://github.com/mohzy83/NppMarkdownPanel/issues/180)
+
+### Version 0.9.2 (released 2026-07-10)
+- Features
+	- Allow show/hide of source pane and not just rendered view pane [#138](https://github.com/mohzy83/NppMarkdownPanel/issues/138) (contributed by letreset)
+		-  see three state toggle
+	- PDF Export [#153](https://github.com/mohzy83/NppMarkdownPanel/issues/153) (contributed by letreset)
+	- Disable wrapping text [#132](https://github.com/mohzy83/NppMarkdownPanel/issues/132)
+		- min width of 250px introduced
+	- Improved Mermaid Support [#108](https://github.com/mohzy83/NppMarkdownPanel/issues/108) (contributed by letreset)
+	- Display document outline [#167](https://github.com/mohzy83/NppMarkdownPanel/issues/167) (contributed by letreset)
+		- see "Show Outline" option
+	- Defer WebView2 initialization (just initialize WebView2 when preview is actually shown) [#164](https://github.com/mohzy83/NppMarkdownPanel/issues/164)
+    - Add checkbox and radio toggle in preview pane [#7](https://github.com/mohzy83/NppMarkdownPanel/issues/7) (contributed by letreset)
+	- Markdig updated to version 1.3.2
+- Bug fixes
+	- Fixed: Local relative path not working with img tag [#84](https://github.com/mohzy83/NppMarkdownPanel/issues/84) (contributed by letreset)
+	- Fixed: same-document anchor links [#86](https://github.com/mohzy83/NppMarkdownPanel/issues/86) (contributed by letreset)
+	- Fixed: Markdown panel black when loading a large table in a detail element [#158](https://github.com/mohzy83/NppMarkdownPanel/issues/158)
+	- Fixed: Add mermaid graph markdown setting pre tag class [#115](https://github.com/mohzy83/NppMarkdownPanel/issues/115) (contributed by letreset)
+
+### Version 0.9.1 (released 2026-01-19)
+
+- Features
+	- Preserve preview scroll position when switching to another file #96
+	- Support (preview) files without an extension #133
+	- Copy to clipboard as formatted text / HTML #128
+	- "Save As.." function that always uses the light theme #126
+![/saveas_lighttheme](help/saveas_lighttheme.png "Save As Light Theme")	
+	- Text Callouts #141
+
+- Bug fixes
+	- Fixed: Undocking the main (preview) window eventually freezes NPP++ #106
+    - Fixed: Markdown preview is not visualized if file extension is changed with MD panel open #107
+	- Fixed: CoreWebView2 uninitialized exception on startup with unsaved backup file #139
+	- Fixed: Memory Leak in plugin. #144
+	- Fixed: Table cells display as individual squares with spacing in Markdown Panel #136, (contributed by [BdR76](https://github.com/BdR76)) #142
+	- Remove build dependency on .NET 3.5 tools (contributed by [rdipardo](https://github.com/rdipardo)) #145
+	- Fix memory layout of ScNotificationHeader (contributed by [rdipardo](https://github.com/rdipardo)) #146
+
+
 ### Version 0.9.0 (released 2025-06-20)
 - requirements
 	- .NET 4.7.2 or higher 
@@ -229,13 +306,18 @@ Bugfix release
 
 | Name                              | Version | Authors                             | Link                                                                                                                   |
 |-----------------------------------|---------|-------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| **Markdig**                       | 0.41.1      | xoofx                               | [https://github.com/lunet-io/markdig](https://github.com/lunet-io/markdig)                                             |
+| **Markdig**                       | 1.3.2      | xoofx                               | [https://github.com/xoofx/markdig](https://github.com/xoofx/markdig)                                             |
 | **NotepadPlusPlusPluginPack.Net** | 0.95    	  | kbilsted                            | [https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net](https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net) |
-| **WebView2 Edge** 				| 1.0.3296.44 | Microsoft                           | [https://developer.microsoft.com/de-de/microsoft-edge/webview2?form=MA13LH](https://developer.microsoft.com/de-de/microsoft-edge/webview2?form=MA13LH) |
+| **WebView2 Edge** 				| 1.0.3650.58 | Microsoft                           | [https://developer.microsoft.com/de-de/microsoft-edge/webview2?form=MA13LH](https://developer.microsoft.com/de-de/microsoft-edge/webview2?form=MA13LH) |
 | **ColorCode (Portable)**          | 1.0.3       | Bashir Souid and Richard Slater     | [https://github.com/RichardSlater/ColorCodePortable](https://github.com/RichardSlater/ColorCodePortable)               |
 | **Markdig.SyntaxHighlighting**    | 1.1.7       | Richard Slater                      | [https://github.com/RichardSlater/Markdig.SyntaxHighlighting](https://github.com/RichardSlater/Markdig.SyntaxHighlighting) |
 | **github-markdown-css**           | 3.0.1       | sindresorhus                        | [https://github.com/sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)             |
 | **Markdown icon**                 |             | dcurtis                             | [https://github.com/dcurtis/markdown-mark](https://github.com/dcurtis/markdown-mark)                                   |
+| **markdown-it-github-alerts**     | 1.0.0       | antfu                               | [https://github.com/antfu/markdown-it-github-alerts](https://github.com/antfu/markdown-it-github-alerts)                                   |
+| **ClipboardHelper (HTML Renderer)**	| 1.5.2       | Arthur Teplitzki                    | [https://github.com/ArthurHub/HTML-Renderer/blob/master/Source/HtmlRenderer.WinForms/Utilities/ClipboardHelper.cs](https://github.com/ArthurHub/HTML-Renderer/blob/master/Source/HtmlRenderer.WinForms/Utilities/ClipboardHelper.cs)                                   |
+| **HtmlSanitizer**					| 9.0.892       | Michael Ganss                    | [https://github.com/mganss/htmlsanitizer](https://github.com/mganss/htmlsanitizer)                                   |
+| **AngleSharp**					| 0.17.1       | AngleSharp                   | [https://github.com/anglesharp/anglesharp](https://github.com/anglesharp/anglesharp)                                   |
+
 
 The plugin uses portions of nea's **MarkdownViewerPlusPlus** Plugin code - [https://github.com/nea/MarkdownViewerPlusPlus](https://github.com/nea/MarkdownViewerPlusPlus)
 
@@ -244,9 +326,15 @@ The plugin uses portions of nea's **MarkdownViewerPlusPlus** Plugin code - [http
 ### Contributors
 
 Thanks to the contributors: 
-
-[vinsworldcom](https://github.com/vinsworldcom), [rdipardo](https://github.com/rdipardo), [andrzejQ](https://github.com/andrzejQ),
-[RicoP](https://github.com/RicoP), [UrsineRaven](https://github.com/UrsineRaven) and
+[letreset](https://github.com/letreset), 
+[vinsworldcom](https://github.com/vinsworldcom), 
+[rdipardo](https://github.com/rdipardo), 
+[andrzejQ](https://github.com/andrzejQ),
+[chcg](https://github.com/chcg),
+[BdR76](https://github.com/BdR76),
+[RicoP](https://github.com/RicoP),
+[UrsineRaven](https://github.com/UrsineRaven)
+ and
 [eeucalyptus](https://github.com/eeucalyptus)
 
 ## License

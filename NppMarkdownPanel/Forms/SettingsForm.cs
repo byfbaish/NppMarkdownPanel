@@ -13,8 +13,10 @@ namespace NppMarkdownPanel.Forms
         public bool ShowToolbar { get; set; }
         public string SupportedFileExt { get; set; }
         public bool AllowAllExtensions { get; set; }
+        public bool SupportFilesWithNoExt { get; set; }
         public bool AutoShowPanel { get; set; }
         public bool ShowStatusbar { get; set; }
+        public bool EnableThreeStateToggle { get; set; }
         public string RenderingEngine { get; set; }
 
 
@@ -30,6 +32,8 @@ namespace NppMarkdownPanel.Forms
             ShowStatusbar = settings.ShowStatusbar;
             RenderingEngine = settings.RenderingEngine;
             AllowAllExtensions = settings.AllowAllExtensions;
+            SupportFilesWithNoExt = settings.SupportFilesWithNoExt;
+            EnableThreeStateToggle = settings.EnableThreeStateToggle;
 
             InitializeComponent();
 
@@ -43,6 +47,8 @@ namespace NppMarkdownPanel.Forms
             cbAutoShowPanel.Checked = AutoShowPanel;
             cbShowStatusbar.Checked = ShowStatusbar;
             cbAllowAllExtensions.Checked = AllowAllExtensions;
+            cbFilesWithNoExt.Checked = SupportFilesWithNoExt;
+            cbEnableThreeStateToggle.Checked = EnableThreeStateToggle;
 
             if (settings.IsRenderingEngineIE11())
             {
@@ -223,11 +229,23 @@ namespace NppMarkdownPanel.Forms
             if (AllowAllExtensions)
             {
                 tbFileExt.Enabled = false;
+                cbFilesWithNoExt.Enabled = false;   
             }
             else
             {
                 tbFileExt.Enabled = true;
+                cbFilesWithNoExt.Enabled = true;
             }
+        }
+
+        private void cbFilesWithNoExt_CheckedChanged(object sender, EventArgs e)
+        {
+            SupportFilesWithNoExt = cbFilesWithNoExt.Checked;
+        }
+
+        private void cbEnableThreeStateToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableThreeStateToggle = cbEnableThreeStateToggle.Checked;
         }
     }
 }

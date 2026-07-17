@@ -60,6 +60,8 @@
             this.cbShowToolbar = new System.Windows.Forms.CheckBox();
             this.cbShowStatusbar = new System.Windows.Forms.CheckBox();
             this.cbAllowAllExtensions = new System.Windows.Forms.CheckBox();
+            this.cbFilesWithNoExt = new System.Windows.Forms.CheckBox();
+            this.cbEnableThreeStateToggle = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -100,7 +102,7 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(468, 548);
+            this.btnSave.Location = new System.Drawing.Point(468, 583);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(105, 36);
             this.btnSave.TabIndex = 20;
@@ -112,7 +114,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(579, 548);
+            this.btnCancel.Location = new System.Drawing.Point(579, 583);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 36);
             this.btnCancel.TabIndex = 21;
@@ -243,7 +245,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sblInvalidHtmlPath});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 596);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 631);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(696, 22);
             this.statusStrip1.TabIndex = 16;
@@ -331,7 +333,7 @@
             // cbAutoShowPanel
             // 
             this.cbAutoShowPanel.AutoSize = true;
-            this.cbAutoShowPanel.Location = new System.Drawing.Point(170, 439);
+            this.cbAutoShowPanel.Location = new System.Drawing.Point(170, 473);
             this.cbAutoShowPanel.Name = "cbAutoShowPanel";
             this.cbAutoShowPanel.Size = new System.Drawing.Size(290, 21);
             this.cbAutoShowPanel.TabIndex = 17;
@@ -366,7 +368,7 @@
             // cbShowToolbar
             // 
             this.cbShowToolbar.AutoSize = true;
-            this.cbShowToolbar.Location = new System.Drawing.Point(170, 466);
+            this.cbShowToolbar.Location = new System.Drawing.Point(170, 500);
             this.cbShowToolbar.Name = "cbShowToolbar";
             this.cbShowToolbar.Size = new System.Drawing.Size(223, 21);
             this.cbShowToolbar.TabIndex = 18;
@@ -377,7 +379,7 @@
             // cbShowStatusbar
             // 
             this.cbShowStatusbar.AutoSize = true;
-            this.cbShowStatusbar.Location = new System.Drawing.Point(170, 495);
+            this.cbShowStatusbar.Location = new System.Drawing.Point(170, 529);
             this.cbShowStatusbar.Name = "cbShowStatusbar";
             this.cbShowStatusbar.Size = new System.Drawing.Size(321, 21);
             this.cbShowStatusbar.TabIndex = 19;
@@ -396,12 +398,36 @@
             this.cbAllowAllExtensions.UseVisualStyleBackColor = true;
             this.cbAllowAllExtensions.CheckedChanged += new System.EventHandler(this.cbAllowAllExtensions_CheckedChanged);
             // 
+            // cbFilesWithNoExt
+            // 
+            this.cbFilesWithNoExt.AutoSize = true;
+            this.cbFilesWithNoExt.Location = new System.Drawing.Point(170, 425);
+            this.cbFilesWithNoExt.Name = "cbFilesWithNoExt";
+            this.cbFilesWithNoExt.Size = new System.Drawing.Size(271, 21);
+            this.cbFilesWithNoExt.TabIndex = 27;
+            this.cbFilesWithNoExt.Text = "Enable preview for files without extension";
+            this.cbFilesWithNoExt.UseVisualStyleBackColor = true;
+            this.cbFilesWithNoExt.CheckedChanged += new System.EventHandler(this.cbFilesWithNoExt_CheckedChanged);
+            // 
+            // cbEnableThreeStateToggle
+            // 
+            this.cbEnableThreeStateToggle.AutoSize = true;
+            this.cbEnableThreeStateToggle.Location = new System.Drawing.Point(170, 556);
+            this.cbEnableThreeStateToggle.Name = "cbEnableThreeStateToggle";
+            this.cbEnableThreeStateToggle.Size = new System.Drawing.Size(317, 21);
+            this.cbEnableThreeStateToggle.TabIndex = 28;
+            this.cbEnableThreeStateToggle.Text = "Enable three-state toggle (docked → fullscreen → hidden)";
+            this.cbEnableThreeStateToggle.UseVisualStyleBackColor = true;
+            this.cbEnableThreeStateToggle.CheckedChanged += new System.EventHandler(this.cbEnableThreeStateToggle_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(696, 618);
+            this.ClientSize = new System.Drawing.Size(696, 653);
+            this.Controls.Add(this.cbFilesWithNoExt);
+            this.Controls.Add(this.cbEnableThreeStateToggle);
             this.Controls.Add(this.cbAllowAllExtensions);
             this.Controls.Add(this.comboRenderingEngine);
             this.Controls.Add(this.label6);
@@ -480,5 +506,7 @@
         private System.Windows.Forms.CheckBox cbShowToolbar;
         private System.Windows.Forms.CheckBox cbShowStatusbar;
         private System.Windows.Forms.CheckBox cbAllowAllExtensions;
+        private System.Windows.Forms.CheckBox cbFilesWithNoExt;
+        private System.Windows.Forms.CheckBox cbEnableThreeStateToggle;
     }
 }

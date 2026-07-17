@@ -20,10 +20,17 @@ namespace NppMarkdownPanel.Webbrowser
         private int lastVerticalScroll = 0;
         public Action<string> StatusTextChangedAction { get; set; }
         public Action RenderingDoneAction { get; set; }
+        public Action AfterInitCompletedAction { get; set; }
+        public Action<int> CheckboxToggleAction { get; set; }
+        public Action<int> RadioToggleAction { get; set; }
 
+        private Action<string> openLocalFileInNppAction;
 
-        public void Initialize(int zoomLevel)
+        bool webViewInitialized = false;
+
+        public void Initialize(int zoomLevel, Action<string> openLocalFileInNppAction)
         {
+            this.openLocalFileInNppAction = openLocalFileInNppAction;
             this.webBrowserPreview = new System.Windows.Forms.WebBrowser();
             this.webBrowserPreview.AllowWebBrowserDrop = false;
             this.webBrowserPreview.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -36,6 +43,12 @@ namespace NppMarkdownPanel.Webbrowser
             this.webBrowserPreview.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowserPreview_DocumentCompleted);
             this.webBrowserPreview.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowserPreview_Navigating);
             this.webBrowserPreview.StatusTextChanged += new System.EventHandler(this.webBrowserPreview_StatusTextChanged);
+            webViewInitialized = true;
+            if (AfterInitCompletedAction != null) AfterInitCompletedAction();
+        }
+
+        public void Dispose()
+        {
         }
 
         public void AddToHost(Control host)
@@ -73,20 +86,31 @@ namespace NppMarkdownPanel.Webbrowser
             Application.DoEvents();
             if (webBrowserPreview.Document != null)
             {
-                HtmlElement child = null;
-
-                for (int i = lineNo; i >= 0; i--)
+                try
                 {
-                    var htmlElement = webBrowserPreview.Document.GetElementById(i.ToString());
-                    if (htmlElement != null)
+                    var script = "var el = document.querySelector('[data-line=\"{0}\"]'); if (el) { el.getBoundingClientRect().top + window.pageYOffset - 20 } else {{ 0 }}";
+                    var offset = webBrowserPreview.Document.InvokeScript("eval", new object[] { string.Format(script, lineNo) });
+                    if (offset is int || offset is double)
                     {
-                        child = htmlElement;
-                        break;
+                        webBrowserPreview.Document.Window.ScrollTo(0, Convert.ToInt32(offset));
                     }
                 }
-
-                if (child != null)
-                    webBrowserPreview.Document.Window.ScrollTo(0, CalculateAbsoluteYOffset(child) - 20);
+                catch
+                {
+                    // fallback to getElementById for backward compatibility
+                    HtmlElement child = null;
+                    for (int i = lineNo; i >= 0; i--)
+                    {
+                        var htmlElement = webBrowserPreview.Document.GetElementById(i.ToString());
+                        if (htmlElement != null)
+                        {
+                            child = htmlElement;
+                            break;
+                        }
+                    }
+                    if (child != null)
+                        webBrowserPreview.Document.Window.ScrollTo(0, CalculateAbsoluteYOffset(child) - 20);
+                }
             }
         }
 
@@ -143,10 +167,7 @@ namespace NppMarkdownPanel.Webbrowser
         {
             if (!e.Url.ToString().StartsWith("about:blank"))
             {
-                e.Cancel = true;
-                var p = new Process();
-                p.StartInfo = new ProcessStartInfo(e.Url.ToString());
-                p.Start();
+
             }
             else
             {
@@ -183,5 +204,30 @@ namespace NppMarkdownPanel.Webbrowser
             return Settings.RENDERING_ENGINE_WEBVIEW1_IE11;
         }
 
+        public bool IsInitialized()
+        {
+            return webViewInitialized && webBrowserPreview != null;
+        }
+
+        public void CurrentDocumentRenamed(string newDocumentPath)
+        {
+
+        }
+
+        public void StopScrollPositionTracking()
+        {
+
+        }
+
+        public void ExportToPdf(string filePath)
+        {
+            if (!IsInitialized()) return;
+            try
+            {
+                var browser = (SHDocVw.IWebBrowser2)webBrowserPreview.ActiveXInstance;
+                browser.ExecWB(OLECMDID.OLECMDID_PRINT, OLECMDEXECOPT.OLECMDEXECOPT_PROMPTUSER, IntPtr.Zero, IntPtr.Zero);
+            }
+            catch { }
+        }
     }
 }
